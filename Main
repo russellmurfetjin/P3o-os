@@ -1,0 +1,402 @@
+app_list = []
+steam = None  # Initialize steam variable
+inscrip = ""  # Initialize inscrip variable
+
+
+import os
+import time
+import sys
+import pickle
+# i want to be able to load the list of apps
+if os.path.exists("apps.pkl"):
+    with open("apps.pkl", "rb") as f:
+        app_list = pickle.load(f)
+username = "user"
+if os.path.exists("username.pkl"):
+    with open("username.pkl", "rb") as f:
+        username = pickle.load(f)
+    print(f"DEBUG: Loaded username: {username}")
+
+if __name__ == "__main__":
+
+    #app_list = []
+    #steam = None  # Initialize steam variable
+    #inscrip = ""  # Initialize inscrip variable
+
+    def OpenNotepad():
+        print("Notepad is now open. Type 'exit' to close.")
+        while True:
+            # i want to load the note from a file if it exists
+            if os.path.exists("note.txt"):
+                with open("note.txt", "r") as f:
+                    note = f.read()
+                    print(f"Loaded note: {note}")
+            note = input("Notepad> ")
+            if note.strip().lower() == "exit":
+                print("Closing Notepad...")
+                #i want to save the note to a file
+                with open("note.txt", "w") as f:
+                    f.write(note)
+                time.sleep(1)
+                break
+            else:
+                print(f"You wrote: {note}")
+    def OpenCalculator():
+        print("Calculator is now open. Type 'exit' to close.")
+        while True:
+            calc = input("Calculator> ")
+            if calc.strip().lower() == "exit":
+                print("Closing Calculator...")
+                time.sleep(1)
+                break
+            else:
+                try:
+                    result = eval(calc)
+                    print(f"Result: {result}")
+                except Exception as e:
+                    print(f"Error: {e}")
+    # Add an app to the list
+    def add_app(app_name):
+        if app_name not in app_list:
+            app_list.append(app_name)
+            print(f"{app_name} added to the app list.")
+        else:
+            print(f"{app_name} is already in the app list.")
+    def remove_app(app_name):
+        if app_name in app_list:
+            app_list.remove(app_name)
+            print(f"{app_name} removed from the app list.")
+        else:
+            print(f"{app_name} is not in the app list.")
+    Internet = None
+    password = "1234"
+
+    wait = input("Press Enter to continue...")
+    print("P3o Os booting up...")
+    time.sleep(3)
+    print("Welcome to P3o Os!")
+    print("would you like to open the start menu?")
+    wait = input("Type Y to open, or N to exit: ")
+
+    if wait.strip().upper() != "Y":
+        print("Exiting...")
+        time.sleep(2)
+        exit()
+    elif wait.strip().upper() == "Y":
+        print("Opening start menu...")
+        time.sleep(2)
+        print("Start menu opened! You can now use P3o Os features.")
+        time.sleep(2)
+        print("Hold please...")
+        time.sleep(2)
+        while True:
+                        # P3o Os start menu
+            print("   ---------------------------------------------   ")
+            print("-----------------Welcome to P3o Os-----------------")
+            print("   ---------------------------------------------   ")
+            print(f"You are logged in as '{username}'")
+            print("Please choose an option:")
+            print("1. Open internet Settings (Press 1)")
+            print("2. Open User Settings (Press 2)")
+            print("3. Open File Explorer (Press 3)")
+            print("4. Open About P3o Os (Press 4)")
+            print("5. Open P3o Os Store (Press 5)")
+            print("6. Web browser (Useing Babascripshin)(Press 6)")
+            print("   ---------------------------------------------   ")
+            print("7. Exit P3o Os (Press 7)")
+            if steam == "Installed":
+                print("8. Open Steam (Press 8)")
+            print("   ---------------------------------------------   ")
+            choice = input("Enter your choice: ")
+            if choice.strip() == "1":
+                print("Opening internet Settings...")
+                time.sleep(2)
+                print("Internet Settings opened!")
+                time.sleep(5)
+                            # Internet settings menu
+                print("Join Wifi network 'Hotel' (Press 1)")
+                print("Join Wifi network 'Home' (Press 2)")
+                print("Back to start menu (Press 3)")
+                net_choice = input("Enter your choice: ")
+                if net_choice.strip() == "1":
+                    print("Connecting to 'Hotel'...")
+                    time.sleep(3)
+                    print("Connected to 'Hotel'!")
+                    time.sleep(5)
+                    print("Returning to start menu...")
+                    time.sleep(2)
+                    Internet = "hotel"
+                elif net_choice.strip() == "2":
+                    print("Connecting to 'Home'...")
+                    time.sleep(3)
+                    print("Connected to 'Home'!")
+                    time.sleep(5)
+                    print("Returning to start menu...")
+                    time.sleep(2)
+                    Internet = "home"
+                elif net_choice.strip() == "3":
+                    print("Returning to start menu...")
+                    time.sleep(2)
+            elif choice.strip() == "2":
+                            # User settings menu
+                print("Opening User Settings...")
+                time.sleep(2)
+                print("User Settings opened!")
+                time.sleep(5)
+                print("Change username (Press 1)")
+                print("Change password (Press 2)")
+                print("Back to start menu (Press 3)")
+                user_choice = input("Enter your choice: ")
+                if user_choice.strip() == "1":
+                    new_username = input("Enter new username: ")
+                    print(f"Changing username to {new_username}...")
+                    time.sleep(3)
+                    print(f"Username changed to {new_username}!")
+                    time.sleep(5)
+                    print("Returning to start menu...")
+                    time.sleep(2)
+                    username=new_username
+                    # i want to save the username to a file
+                    with open("username.pkl", "wb") as f:
+                        pickle.dump(username, f)
+                elif user_choice.strip() == "2":
+                    password = "password"
+                    new_password = input("Enter new password: ")
+                    print("Changing password...")
+                    time.sleep(3)
+                    print("Password changed!")
+                    time.sleep(5)
+                    print("Returning to start menu...")
+                    time.sleep(2)
+                    password=new_password
+                elif user_choice.strip() == "3":
+                    print("Returning to start menu...")
+                    time.sleep(2)
+            elif choice.strip() == "3":
+                print("Opening File Explorer...")
+                time.sleep(2)
+                print("File Explorer opened!")
+                time.sleep(5)
+                
+                #print("Your files:")
+                
+                #for file in os.listdir("."):
+                #    print(file)
+                #file_choice = input("Enter the name of the file you want to open (or type 'back' to return to start menu): ")
+                        #Opening file code here
+                found_app = False
+                if "Notepad" in app_list:
+                    print("1. Open Notepad (Press 1)")
+                    found_app = True
+                if "Calculator" in app_list:
+                    print("2. Open Calculator (Press 2)")
+                    found_app = True
+                if not found_app:
+                    print("You have no apps you can open yet")
+
+                if found_app:
+                    calc_choice = input("Enter your choice: ")
+                    if calc_choice.strip() == "1" and "Notepad" in app_list:
+                        OpenNotepad()
+                    elif calc_choice.strip() == "2" and "Calculator" in app_list:
+                        OpenCalculator()
+            
+                wait = input("Press Enter to return to start menu...")
+                time.sleep(2)
+                print("Returning to start menu...")
+                time.sleep(2)
+                
+                time.sleep(5)
+                print("Returning to start menu...")
+                time.sleep(2)
+            elif choice.strip() == "4":
+                print("Opening About P3o Os...")
+                time.sleep(2)
+                print("P3o Os is a operating system made by Russell (me)." \
+                " It is a simple operating system made in Python." \
+                " It is still in development, so it may have some bugs." \
+                    " But I hope you enjoy using it! (colab with Daniel and PO3)")
+                wait = input("Press Enter to return to start menu...")
+                time.sleep(2)
+                print("Returning to start menu...")
+                time.sleep(2)
+            elif choice.strip() == "5":
+                print("Opening P3o Os Store...")
+                time.sleep(2)
+                print("P3o Os Store opened!")
+                print("Apps available:" \
+                "n1. Calculator (Press 1)" \
+                "n2. Notepad (Press 2)"
+                "n3. Back to start menu (Press 3)")
+                store_choice = input("Enter your choice or type 'Remove app' : ")
+                if store_choice.strip() == "1":
+                    # Download Calculator
+                    print("Downloading Calculator...")
+                    time.sleep(2)
+                    print("Calculator Dowloaded!")
+                    add_app("Calculator")
+                    # i want to save the list of apps to a file
+                    with open("apps.pkl", "wb") as f:
+                        pickle.dump(app_list, f)
+
+                    time.sleep(2)
+                    print("Comeback soon!")
+                elif store_choice.strip() == "2":
+                    print("downloading Notepad...")
+                    time.sleep(2)
+                    print("Notepad Dowloaded!")
+                    add_app("Notepad")
+                    # i want to save the list of apps to a file
+                    with open("apps.pkl", "wb") as f:
+                        pickle.dump(app_list, f)
+                    time.sleep(2)
+                    print("Comeback soon!")
+                elif store_choice.strip().lower() == "remove app":
+                    app_to_remove = input("Enter the name of the app you want to remove: ")
+                    remove_app(app_to_remove)
+                    # i want to save the list of apps to a file
+                    with open("apps.pkl", "wb") as f:
+                        pickle.dump(app_list, f)
+                    time.sleep(2)
+                    print("Comeback soon!")
+
+                time.sleep(1)
+                print("Returning to start menu...")
+                time.sleep(2)
+            elif choice.strip() == "6":
+                print("Opening Web browser...")
+                time.sleep(2)
+                print("Web browser opened!")
+                time.sleep(5)
+                print("This web browser is made by Babascripshin.")
+                print("It is a simple web browser that can open websites.")
+                print("Type 'exit' to close the web browser.")
+                print("1. search 'Google information' (Press 1)")
+                print("2. search 'YouTube videos' (Press 2)")
+                print("3. search 'steam install' (Press 3)")
+                print("4. Back to start menu (Press 4)")
+                web_choice = input("Enter your choice: ")
+                if web_choice.strip() == "1":
+                    print("Searching 'Google information'...")
+                    time.sleep(2)
+                    print("Here is some information about Google:"
+                    "Google is a search engine that was founded in 1998 by Larry Page and Sergey Brin."
+                    " It is the most popular search engine in the world, with over 90% of the market share."
+                    " Google is also a technology company that offers a variety of products and services, including Gmail"
+                    " Google Drive, Google Maps, and YouTube."
+                    "it is not being used in P3o Os because its usage is still being worked on.")
+                    wait = input("Press Enter to return to start menu...")
+                    time.sleep(2)
+                    print("Returning to start menu...")
+                    time.sleep(2)
+                elif web_choice.strip() == "2":
+                    print("Searching 'YouTube videos'...")
+                    time.sleep(2)
+                    print("Here are some popular YouTube videos:"
+                    "1. Baby Shark Dance - Pinkfong (10 billion views)"
+                    "2. Despacito - Luis Fonsi ft. Daddy Yankee (7.5 billion views)"
+                    "3. Shape of You - Ed Sheeran (5.5 billion views)"
+                    "4. See You Again - Wiz Khalifa ft. Charlie Puth (5.3 billion views)"
+                    "5. Uptown Funk - Mark Ronson ft. Bruno Mars (4.5"
+                    "billion views)"
+                    "it is not being used in P3o Os because its usage is still being worked on.")
+                    wait = input("Press Enter to return to start menu...")
+                    time.sleep(2)
+                    print("Returning to start menu...")
+                    time.sleep(2)
+                elif web_choice.strip() == "3":
+                    print("Searching 'steam install'...")
+                    time.sleep(2)
+                    print("P30\\Steam.website"
+                          "Welcome to Steam"
+                          "Steam is a digital distribution platform for video games developed by Valve Corporation.")
+                    print("Would you like to install Steam? (Press 1 to install, any other key to cancel or type 'Uninstall' to uninstall if already installed)")
+                    install_choice = input("Enter your choice: ")
+                    if install_choice.strip() == "1":
+                        steam = "Installed"
+                        print("Steam has been installed!")
+                        # i want to save the steam status to a file
+                        with open("steam_status.pkl", "wb") as f:
+                            pickle.dump(steam, f)
+                        print("You can now use Steam to install and manage your games.")
+                        time.sleep(3)
+                        print("Returning to start menu...")
+                        time.sleep(2)
+                    elif install_choice.strip() == "Uninstall" and steam == "Installed":
+                        steam = None
+                        print("Steam has been uninstalled.")
+                        # i want to save the steam status to a file
+                        with open("steam_status.pkl", "wb") as f:
+                            pickle.dump(steam, f)
+                        time.sleep(2)
+                        print("Returning to start menu...")
+                        time.sleep(2)
+                    elif install_choice.strip() != "1":
+                        print("Steam installation cancelled.")
+                        time.sleep(2)
+                    wait = input("Press Enter to return to start menu...")
+                    time.sleep(2)
+                    print("Returning to start menu...")
+                    time.sleep(2)
+                elif web_choice.strip() == "4":
+                    print("Returning to start menu...")
+                    time.sleep(2)
+            elif choice.strip() == "7":
+                print("Exiting P3o Os...")
+                time.sleep(2)
+                print("Goodbye!")
+                time.sleep(2)
+                exit()
+            elif choice.strip() == "8" and steam == "Installed":
+                print("Opening Steam...")
+                time.sleep(2)
+                print("Steam opened!")
+                time.sleep(5)
+                print("Welcome to Steam!")
+                print("1. Install Inscrip (Press 1)")
+                print("2. View installed games (Press 2)")
+                print("3. Back to start menu (Press 3)")
+                steam_choice = input("Enter your choice: ")
+                if steam_choice.strip() == "1":
+                    print("Installing a Inscrip...")
+                    time.sleep(2)
+                    print("Inscrip installed!")
+                    time.sleep(2)
+                    print("Returning to start menu...")
+                    time.sleep(2)
+                elif steam_choice.strip() == "2":
+                    if "Inscrip" not in app_list:
+                        print("You have no installed games.")
+                        time.sleep(2)
+                        print("Returning to start menu...")
+                        time.sleep(2)
+                    else:
+                        print("Your installed games:")
+                        if "Inscrip" in app_list:
+                            print("1. Inscrip")
+                        game_choice = input("Enter the name of the game you want to open (or type 'back' to return to start menu): ")
+                        if game_choice.strip().lower() == "back":
+                            print("Returning to start menu...")
+                            time.sleep(2)
+                        elif game_choice.strip() == "Inscrip" and "Inscrip" in app_list:
+                            while True:
+                                inscrip = input("Inscrip> ")
+                                if inscrip.strip().lower() == "exit":
+                                    print("Closing Inscrip...")
+                                    time.sleep(1)
+                                    break
+                                else:
+                                    print("You wake up in a cabin. You are tied to a table. You see a figure in the darkness in front of you."
+                                    " On the table it seemslike theres a card game set up.")
+
+                            wait = input("Press Enter to return to start menu...")
+                            time.sleep(2)
+                            print("Returning to start menu...")
+                            time.sleep(2)
+                            print("hold...")
+                            time.sleep(2)
+                            print("Nearly there...")
+                            time.sleep(2)
+                elif steam_choice.strip() == "3":
+                    print("Returning to start menu...")
+                    time.sleep(2)            
