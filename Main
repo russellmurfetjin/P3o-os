@@ -215,8 +215,9 @@ if __name__ == "__main__":
                     if new_username.strip().lower() == "Daniel":
                         print("Hello Daniel! You are a collaborator on P3o Os."
                         " Enjoy your stay!")
-                        time.sleep(2)
                         Admin = True
+                        time.sleep(2)
+                        
 
                     print("Returning to start menu...")
                     time.sleep(2)
