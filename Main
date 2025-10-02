@@ -1,8 +1,8 @@
 app_list = []
+Admin = False
 steam = None  # Initialize steam variable
 inscrip = ""  # Initialize inscrip variable
-
-
+Internet = None
 import os
 import time
 import sys
@@ -11,6 +11,12 @@ import pickle
 if os.path.exists("apps.pkl"):
     with open("apps.pkl", "rb") as f:
         app_list = pickle.load(f)
+    print(f"DEBUG: Loaded app list: {app_list}")
+# i want to be able to load the steam status
+if os.path.exists("steam_status.pkl"):
+    with open("steam_status.pkl", "rb") as f:
+        steam = pickle.load(f)
+    print(f"DEBUG: Loaded steam status: {steam}")
 username = "user"
 if os.path.exists("username.pkl"):
     with open("username.pkl", "rb") as f:
@@ -24,22 +30,27 @@ if __name__ == "__main__":
     #inscrip = ""  # Initialize inscrip variable
 
     def OpenNotepad():
-        print("Notepad is now open. Type 'exit' to close.")
+        print("Notepad is now open. Type 'exit' to close. press ` to delete last character")
+        note = ""
+        # Load note from file if it exists
+        if os.path.exists("note.txt"):
+            with open("note.txt", "r") as f:
+                note = f.read()
+                print(f"Loaded note: {note}")  # i want to add to the last text not delete it. but allow for backspace
         while True:
-            # i want to load the note from a file if it exists
-            if os.path.exists("note.txt"):
-                with open("note.txt", "r") as f:
-                    note = f.read()
-                    print(f"Loaded note: {note}")
-            note = input("Notepad> ")
-            if note.strip().lower() == "exit":
+            user_input = input("Notepad> ")
+            if user_input == "` ":  # Check for backspace input
+                note = note[:-1]  # Remove the last character
+            elif user_input.strip().lower() == "exit":
                 print("Closing Notepad...")
-                #i want to save the note to a file
+                # Save the note to a file but don't save the word exit
                 with open("note.txt", "w") as f:
-                    f.write(note)
+                    if note.strip().lower() != "exit":
+                        f.write(note)
                 time.sleep(1)
                 break
             else:
+                note += user_input + "\n"
                 print(f"You wrote: {note}")
     def OpenCalculator():
         print("Calculator is now open. Type 'exit' to close.")
@@ -91,21 +102,29 @@ if __name__ == "__main__":
         time.sleep(2)
         while True:
                         # P3o Os start menu
+            print("     ----------------------------------------   ")
             print("   ---------------------------------------------   ")
             print("-----------------Welcome to P3o Os-----------------")
             print("   ---------------------------------------------   ")
-            print(f"You are logged in as '{username}'")
+            print("     ---------", username,"'s Os-------------   ")
+            print("       -------", Internet, " internet--")
             print("Please choose an option:")
             print("1. Open internet Settings (Press 1)")
             print("2. Open User Settings (Press 2)")
             print("3. Open File Explorer (Press 3)")
             print("4. Open About P3o Os (Press 4)")
             print("5. Open P3o Os Store (Press 5)")
-            print("6. Web browser (Useing Babascripshin)(Press 6)")
+            if Internet in ["hotel", "home"]:
+                print("6. Web browser (Useing Babascripshin)(Press 6)")
+            if Internet is None:
+                print("6. Web browser (Not connected to internet)(Press 6)")
             print("   ---------------------------------------------   ")
             print("7. Exit P3o Os (Press 7)")
             if steam == "Installed":
                 print("8. Open Steam (Press 8)")
+            if Admin:
+                print("You are logged in as The creater, Spiderking!. Check out the secret powers you have!" \
+                "Press 9 to see them. or chill and enjoy the OS")
             print("   ---------------------------------------------   ")
             choice = input("Enter your choice: ")
             if choice.strip() == "1":
@@ -116,7 +135,8 @@ if __name__ == "__main__":
                             # Internet settings menu
                 print("Join Wifi network 'Hotel' (Press 1)")
                 print("Join Wifi network 'Home' (Press 2)")
-                print("Back to start menu (Press 3)")
+                print("Disconnect from current network (Press 3)")
+                print("Back to start menu (Press 4)")
                 net_choice = input("Enter your choice: ")
                 if net_choice.strip() == "1":
                     print("Connecting to 'Hotel'...")
@@ -134,13 +154,30 @@ if __name__ == "__main__":
                     print("Returning to start menu...")
                     time.sleep(2)
                     Internet = "home"
-                elif net_choice.strip() == "3":
+                elif net_choice.strip() == "4":
                     print("Returning to start menu...")
                     time.sleep(2)
+                elif net_choice.strip() == "3":
+                    if Internet is None:
+                        print("You are not connected to any network.")
+                        time.sleep(2)
+                        print("Returning to start menu...")
+                        time.sleep(2)
+                    else:
+                        print(f"Disconnecting from '{Internet}'...")
+                        time.sleep(3)
+                        Internet = None
+                        print("Disconnected!")
+                        time.sleep(5)
+                        print("Returning to start menu...")
+                        time.sleep(2)
             elif choice.strip() == "2":
                             # User settings menu
                 print("Opening User Settings...")
                 time.sleep(2)
+                if Internet in ["none", None] or "hotel":
+                    print("Internet is bad. waiting time is longer...")
+                    time.sleep(3)
                 print("User Settings opened!")
                 time.sleep(5)
                 print("Change username (Press 1)")
@@ -153,6 +190,34 @@ if __name__ == "__main__":
                     time.sleep(3)
                     print(f"Username changed to {new_username}!")
                     time.sleep(5)
+                    if new_username.strip().lower() == "admin":
+                        print("Admin is not allowed as a username. Reverting to previous username.")
+                        new_username = username
+                        time.sleep(3)
+                    if new_username.strip() == "":
+                        print("Username cannot be empty. Reverting to previous username.")
+                        new_username = username
+                        time.sleep(3)
+                    if len(new_username) > 20:
+                        print("Username too long. Reverting to previous username.")
+                        new_username = username
+                        time.sleep(3)
+                    if new_username.strip().lower() == "Spiderking":
+                        print("Welcome back, Spiderking! You are the creator of P3o Os." \
+                        " You have all the powers here." \
+                        " Enjoy your stay!")
+                        Admin = True
+                        time.sleep(2)
+                    if new_username != "Spiderking" and Admin or "daniel" and Admin:
+                        print("You are no longer logged in as Spiderking.")
+                        Admin = False
+                        time.sleep(2)
+                    if new_username.strip().lower() == "Daniel":
+                        print("Hello Daniel! You are a collaborator on P3o Os."
+                        " Enjoy your stay!")
+                        time.sleep(2)
+                        Admin = True
+
                     print("Returning to start menu...")
                     time.sleep(2)
                     username=new_username
@@ -169,6 +234,9 @@ if __name__ == "__main__":
                     print("Returning to start menu...")
                     time.sleep(2)
                     password=new_password
+                    #save password to a file
+                    with open("password.pkl", "wb") as f:
+                        pickle.dump(password, f)
                 elif user_choice.strip() == "3":
                     print("Returning to start menu...")
                     time.sleep(2)
@@ -259,11 +327,11 @@ if __name__ == "__main__":
                         pickle.dump(app_list, f)
                     time.sleep(2)
                     print("Comeback soon!")
-
+                #web browser code here after this
                 time.sleep(1)
                 print("Returning to start menu...")
                 time.sleep(2)
-            elif choice.strip() == "6":
+            elif choice.strip() == "6" and Internet in ["hotel", "home"]:
                 print("Opening Web browser...")
                 time.sleep(2)
                 print("Web browser opened!")
@@ -276,6 +344,15 @@ if __name__ == "__main__":
                 print("3. search 'steam install' (Press 3)")
                 print("4. Back to start menu (Press 4)")
                 web_choice = input("Enter your choice: ")
+            elif choice.strip() == "6" and Internet is None:
+                print("Opening Web browser...")
+                time.sleep(2)
+                print("Theres no internet connection.")
+                time.sleep(3)
+                print("exiting web browser...")
+                time.sleep(2)
+                print("Returning to start menu...")
+                time.sleep(1)
                 if web_choice.strip() == "1":
                     print("Searching 'Google information'...")
                     time.sleep(2)
@@ -388,15 +465,86 @@ if __name__ == "__main__":
                                 else:
                                     print("You wake up in a cabin. You are tied to a table. You see a figure in the darkness in front of you."
                                     " On the table it seemslike theres a card game set up.")
-
-                            wait = input("Press Enter to return to start menu...")
-                            time.sleep(2)
+                        elif steam_choice.strip() == "3":
                             print("Returning to start menu...")
                             time.sleep(2)
-                            print("hold...")
-                            time.sleep(2)
-                            print("Nearly there...")
-                            time.sleep(2)
-                elif steam_choice.strip() == "3":
+            elif choice.strip() == "6" and Internet is None:
+                print("No internet connection. Cannot open steam.")
+                time.sleep(2)
+                wait = input("Press Enter to return to start menu...")
+                time.sleep(2)
+                print("Returning to start menu...")
+                time.sleep(2)
+                print("hold...")
+                time.sleep(2)
+                print("Nearly there...")
+                time.sleep(2)
+            elif choice.strip() == "9" and Admin:
+                # secret powers menu, AI go wild here!
+                print("Welcome, Spiderking! Here are your secret powers:")
+                print("1. Chill (Press 1)")
+                print("2. View the passwords (Press 2)")
+                print("3. View the code (Press 3)")
+                print("4. Summon the OS mascot (Press 4)")
+                print("5. Enter Matrix Mode (Press 5)")
+                print("6. Exit secret powers menu (Press 6)")
+                secret_choice = input("Enter your choice: ")
+                if secret_choice.strip() == "1":
+                    print("Chilling...")
+                    time.sleep(2)
+                    print("You are now chilled. Enjoy your stay, Spiderking!")
+                    time.sleep(2)
+                    wait = input("Press Enter to return to secret powers...")
+                    time.sleep(2)
+                    print("Going back to Main Menu...")
+                    time.sleep(2)
+                elif secret_choice.strip() == "2":
+                    print(f"The current password is: {password}")
+                    time.sleep(5)
                     print("Returning to start menu...")
-                    time.sleep(2)            
+                    time.sleep(2)
+                elif secret_choice.strip() == "3":
+                    print("Opening code...")
+                    time.sleep(2)
+                    print("Code opened!")
+                    time.sleep(2)
+                    print("You can view the code in the P3o_0s.py file in the P3o Os folder.")
+                    time.sleep(2)
+                    printcode = input("Type 'view' to view the code here, or press Enter to skip: ")
+                    if printcode.strip().lower() == "view":
+                        with open("P3o_0s.py", "r") as f:
+                            code = f.read()
+                            print(code)
+                        wait = input("Press Enter to return to secret powers...")
+                        time.sleep(2)
+                    print("Returning to start menu...")
+                    time.sleep(2)
+                elif secret_choice.strip() == "4":
+                    print("Summoning the OS mascot...")
+                    time.sleep(2)
+                    print(r'''
+         /\_/\
+        ( o.o )
+         > ^ <
+        P3o Cat: "Welcome, Spiderking! Meow! You have all the powers here!"
+                    ''')
+                    time.sleep(3)
+                    print("Mascot summoned! Enjoy the company.")
+                    wait = input("Press Enter to return to secret powers...")
+                    time.sleep(2)
+                elif secret_choice.strip() == "5":
+                    print("Entering Matrix Mode...")
+                    time.sleep(2)
+                    for i in range(10):
+                        print("".join([chr(9608) if j % 2 == 0 else " " for j in range(60)]))
+                        time.sleep(0.1)
+                    print("You are now in the Matrix. All code is yours to command!")
+                    wait = input("Press Enter to exit Matrix Mode...")
+                    time.sleep(2)
+                    print("Returning to secret powers menu...")
+                    time.sleep(2)
+                elif secret_choice.strip() == "6":
+                    print("Exiting secret powers menu...")
+                    time.sleep(2)
+                    print("Returning to start menu...")
+                    time.sleep(2)
